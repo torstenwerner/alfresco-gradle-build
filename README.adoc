@@ -1,0 +1,4 @@
+# Alfresco build sample using gradle
+
+This project uses gradle instead of the Alfresco maven SDK.
+It currently shows how to unit test Alfresco services e.g. in class NodeServiceTest.java.

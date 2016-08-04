@@ -1,0 +1,59 @@
+group 'xyz.its_me'
+version '0.1-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    maven {
+        url 'https://artifacts.alfresco.com/nexus/content/groups/public/'
+    }
+}
+
+configurations {
+    alfresco
+
+    // believe it or not but activiti depends on spring 4.1.5 which is incompatible with alfresco
+    all {
+        resolutionStrategy {
+            eachDependency {
+                DependencyResolveDetails details ->
+                    if (details.requested.group == 'org.springframework') {
+                        details.useVersion '3.2.17.RELEASE'
+                    }
+            }
+        }
+    }
+}
+
+dependencies {
+    alfresco("org.alfresco:alfresco:$alfrescoVersion:@war") {
+        transitive = false
+    }
+
+    testCompile 'junit:junit:4.12',
+            "org.alfresco:alfresco-remote-api:$alfrescoVersion:tests",
+            "org.springframework.extensions.surf:spring-webscripts:$surfVersion:tests"
+
+    testRuntime 'mysql:mysql-connector-java:5.1.39',
+            "org.alfresco:alfresco-repository:$alfrescoVersion:tests"
+}
+
+def alfrescoPath = "$buildDir/alfresco"
+
+task extractAlfresco(type: Copy) {
+    from {
+        configurations.alfresco.collect { zipTree(it) }
+    }
+    into alfrescoPath
+}
+
+test {
+    classpath = sourceSets.test.runtimeClasspath + files("$alfrescoPath/WEB-INF/classes") +
+            fileTree(dir: "$alfrescoPath/WEB-INF/lib", include: '*.jar')
+}
+
+test.dependsOn extractAlfresco
+
