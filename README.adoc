@@ -2,3 +2,6 @@
 
 This project uses gradle instead of the Alfresco maven SDK.
 It currently shows how to unit test Alfresco services e.g. in class NodeServiceTest.java.
+The test expects a local mysql database with name alfresco, user alfresco, and password alfresco.
+Please create a file src/test/resources/alfresco-global.properties if you need a different setup.
+Please change the testRuntime dependencies in build.gradle in case you need another driver instead of mysql.
