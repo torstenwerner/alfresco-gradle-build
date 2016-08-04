@@ -10,6 +10,11 @@ The test expects a local mysql database with name alfresco, user alfresco, and p
 Please create a file src/test/resources/alfresco-global.properties if you need a different setup.
 Please change the testRuntime dependencies in build.gradle in case you need another driver instead of mysql.
 
+[source]
+----
+./gradlew test
+----
+
 ## Starting Alfresco in an embedded Tomcat container
 
 That will be added later based on the project link:https://github.com/torstenwerner/tomcat-embedded[tomcat-embedded].

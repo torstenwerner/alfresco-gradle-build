@@ -4,8 +4,11 @@ import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.cmr.repository.StoreRef;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.UUID;
 
@@ -13,10 +16,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.*;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:alfresco/application-context.xml")
 public class NodeServiceTest {
-    private static final String CONFIG_LOCATION = "classpath:alfresco/application-context.xml";
-    private static final ApplicationContext context = new ClassPathXmlApplicationContext(CONFIG_LOCATION);
-    private NodeService nodeService = context.getBean("nodeService", NodeService.class);
+    @Autowired
+    @Qualifier("nodeService")
+    private NodeService nodeService;
 
     @Test
     public void testContextStarts() {

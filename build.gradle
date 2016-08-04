@@ -16,19 +16,22 @@ configurations {
     alfresco
 }
 
+def alfrescoPath = "$buildDir/alfresco"
+
 dependencies {
     alfresco("org.alfresco:alfresco:$alfrescoVersion:@war") {
         transitive = false
     }
 
     testCompile 'junit:junit:4.12',
-            "org.springframework:spring-context:$springVersion",
-            "org.alfresco:alfresco-data-model:$alfrescoVersion"
+            "org.springframework:spring-test:$springVersion",
+            files("$alfrescoPath/WEB-INF/classes"),
+            fileTree(dir: "$alfrescoPath/WEB-INF/lib", include: '*.jar')
 
-    testRuntime 'mysql:mysql-connector-java:5.1.39'
+    testRuntime 'mysql:mysql-connector-java:5.1.39',
+            'javax.servlet:javax.servlet-api:3.1.0'
 }
 
-def alfrescoPath = "$buildDir/alfresco"
 
 task extractAlfresco(type: Copy) {
     from {
@@ -37,9 +40,5 @@ task extractAlfresco(type: Copy) {
     into alfrescoPath
 }
 
-test {
-    classpath = sourceSets.test.runtimeClasspath + files("$alfrescoPath/WEB-INF/classes") +
-            fileTree(dir: "$alfrescoPath/WEB-INF/lib", include: '*.jar')
-    dependsOn extractAlfresco
-}
+test.dependsOn extractAlfresco
 
