@@ -30,8 +30,7 @@ dependencies {
             "org.springframework:spring-test:$springVersion",
             "org.alfresco:alfresco-data-model:$alfrescoVersion"
 
-    testRuntime 'javax.servlet:javax.servlet-api:3.1.0',
-            "org.alfresco:alfresco-repository:$alfrescoVersion",
+    testRuntime "org.alfresco:alfresco-repository:$alfrescoVersion",
             "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
             'com.h2database:h2:1.4.192'
 }
