@@ -12,33 +12,12 @@ repositories {
     }
 }
 
-configurations {
-    alfresco
-}
-
-def alfrescoPath = "$buildDir/alfresco"
-
 dependencies {
-    alfresco("org.alfresco:alfresco:$alfrescoVersion:@war") {
-        transitive = false
-    }
-
     testCompile 'junit:junit:4.12',
             "org.springframework:spring-test:$springVersion",
-            files("$alfrescoPath/WEB-INF/classes"),
-            fileTree(dir: "$alfrescoPath/WEB-INF/lib", include: '*.jar')
+            "org.alfresco:alfresco-data-model:$alfrescoVersion"
 
     testRuntime 'mysql:mysql-connector-java:5.1.39',
-            'javax.servlet:javax.servlet-api:3.1.0'
+            'javax.servlet:javax.servlet-api:3.1.0',
+            "org.alfresco:alfresco-repository:$alfrescoVersion"
 }
-
-
-task extractAlfresco(type: Copy) {
-    from {
-        configurations.alfresco.collect { zipTree(it) }
-    }
-    into alfrescoPath
-}
-
-test.dependsOn extractAlfresco
-
