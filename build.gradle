@@ -12,6 +12,19 @@ repositories {
     }
 }
 
+configurations {
+    all {
+        resolutionStrategy {
+            eachDependency {
+                DependencyResolveDetails details ->
+                    if (details.requested.group == 'org.springframework') {
+                        details.useVersion springVersion
+                    }
+            }
+        }
+    }
+}
+
 dependencies {
     testCompile 'junit:junit:4.12',
             "org.springframework:spring-test:$springVersion",
