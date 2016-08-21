@@ -45,5 +45,6 @@ task startTomcat(type: JavaExec, dependsOn: extractWar) {
 }
 
 test {
+    dependsOn extractWar
     systemProperties = tomcatProperties
 }
