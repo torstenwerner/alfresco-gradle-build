@@ -22,7 +22,7 @@ public class TomcatLauncher {
     private static final CompletableFuture<Void> startFuture = new CompletableFuture<>();
     private static final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
 
-    public static void start(int port, String contextPath, String docBase) {
+    public static void start(int port, String contextPath, String docBase, String... preRessources) {
         try {
             final Path basePath = Files.createTempDirectory("tomcat-base-dir");
             System.out.printf("basePath: %s\n", basePath);
@@ -38,10 +38,13 @@ public class TomcatLauncher {
 
             // Declare an alternative location for your "WEB-INF/classes" dir
             // Servlet 3.0 annotation will work
-            final File additionWebInfClasses = new File("build/classes");
             final WebResourceRoot resources = new StandardRoot(ctx);
-            resources.addPreResources(
-                    new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
+            for (String preRessource : preRessources) {
+                System.out.printf("preResource: %s\n", preRessource);
+                final File additionWebInfClasses = new File(preRessource);
+                resources.addPreResources(
+                        new DirResourceSet(resources, "/WEB-INF/lib", additionWebInfClasses.getAbsolutePath(), "/"));
+            }
             ctx.setResources(resources);
 
 

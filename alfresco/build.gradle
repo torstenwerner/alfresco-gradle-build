@@ -22,8 +22,8 @@ task extractWar(type: Copy) {
     into webapp
 }
 
-task startTomcat(type: JavaExec, dependsOn: extractWar) {
+task startTomcat(type: JavaExec, dependsOn: ['extractWar', ':jar']) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'xyz.its_me.alfresco.Launcher'
-    args = [webapp]
+    args = [webapp, "${rootProject.buildDir}/libs"]
 }
