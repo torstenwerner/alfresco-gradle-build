@@ -18,3 +18,8 @@ Please change the testRuntime dependencies in build.gradle in case you need anot
 ## Starting Alfresco in an embedded Tomcat container
 
 That will be added later based on the project link:https://github.com/torstenwerner/tomcat-embedded[tomcat-embedded].
+
+## Continuous Integration thanks to Snap CI
+
+Build image:https://snap-ci.com/torstenwerner/alfresco-gradle-build/branch/master/build_image[status]
+at link:https://snap-ci.com/torstenwerner/alfresco-gradle-build/branch/master[Snap CI]
