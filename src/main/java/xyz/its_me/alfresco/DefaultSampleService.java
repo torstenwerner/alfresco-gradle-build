@@ -9,9 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DefaultSampleService implements SampleService {
+    private final NodeService nodeService;
+
     @Autowired
-    @Qualifier("nodeService")
-    private NodeService nodeService;
+    public DefaultSampleService(@Qualifier("nodeService") NodeService nodeService) {
+        this.nodeService = nodeService;
+    }
 
     @Override
     public NodeRef getRoot() {
