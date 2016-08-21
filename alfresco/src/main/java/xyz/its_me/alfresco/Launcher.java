@@ -12,7 +12,8 @@ public class Launcher {
         System.out.printf("docBase: %s\n", docBase);
         System.setProperty("tomcat.util.scan.StandardJarScanFilter.jarsToSkip", "*.jar");
 
-        TomcatLauncher.start(8080, "/alfresco", docBase);
-        TomcatLauncher.waitforever();
+        final TomcatLauncher launcher = TomcatLauncher.create(8080, "/alfresco", docBase);
+        launcher.start();
+        launcher.waitForStop();
     }
 }
