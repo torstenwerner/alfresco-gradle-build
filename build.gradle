@@ -36,3 +36,7 @@ dependencies {
             "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
             'com.h2database:h2:1.4.192'
 }
+
+test.testLogging.lifecycle {
+    events 'skipped', 'passed', 'failed'
+}
