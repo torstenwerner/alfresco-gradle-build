@@ -16,7 +16,8 @@ dependencies {
     war "org.alfresco:alfresco:$alfrescoVersion:@war"
 
     testCompile 'junit:junit:4.12',
-            "org.springframework:spring-test:$springVersion"
+            "org.springframework:spring-test:$springVersion",
+            "org.springframework:spring-web:$springVersion"
 }
 
 def webapp = "$buildDir/webapps/alfresco"
