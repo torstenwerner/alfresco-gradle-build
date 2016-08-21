@@ -19,6 +19,9 @@ Please change the testRuntime dependencies in build.gradle in case you need anot
 
 That will be added later based on the project link:https://github.com/torstenwerner/tomcat-embedded[tomcat-embedded].
 
+It is currently very limited. Please run the gradle task startTomcat and open the URL
+link:http://localhost:8080/alfresco/[localhost:8080/alfresco].
+
 ## Continuous Integration thanks to Snap CI
 
 Build image:https://snap-ci.com/torstenwerner/alfresco-gradle-build/branch/master/build_image[status]

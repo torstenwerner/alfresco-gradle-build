@@ -1,0 +1,12 @@
+configurations {
+    launcher
+}
+
+dependencies {
+    launcher project(':tomcat-embedded-launcher')
+}
+
+task startTomcat(type: JavaExec, dependsOn: ':tomcat-embedded-launcher:classes') {
+    classpath =  sourceSets.main.runtimeClasspath + configurations.launcher
+    main = 'xyz.its_me.TomcatLauncher'
+}

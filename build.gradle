@@ -1,14 +1,15 @@
-group 'xyz.its_me'
-version '0.1-SNAPSHOT'
+allprojects {
+    group 'xyz.its_me'
+    version '0.1-SNAPSHOT'
 
-apply plugin: 'java'
+    apply plugin: 'java'
+    sourceCompatibility = 1.8
 
-sourceCompatibility = 1.8
-
-repositories {
-    jcenter()
-    maven {
-        url 'https://artifacts.alfresco.com/nexus/content/groups/public/'
+    repositories {
+        jcenter()
+        maven {
+            url 'https://artifacts.alfresco.com/nexus/content/groups/public/'
+        }
     }
 }
 
