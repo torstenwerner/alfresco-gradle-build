@@ -3,8 +3,9 @@ configurations {
 }
 
 dependencies {
-    runtime project(':tomcat-embedded-launcher'),
-            rootProject,
+    compile project(':tomcat-embedded-launcher')
+
+    runtime rootProject,
             'com.h2database:h2:1.4.192',
             files("$buildDir/WEB-INF/classes"),
             fileTree(dir: "$buildDir/WEB-INF/lib", include: '*.jar')
@@ -13,6 +14,9 @@ dependencies {
     }
 
     war "org.alfresco:alfresco:$alfrescoVersion:@war"
+
+    testCompile 'junit:junit:4.12',
+            "org.springframework:spring-test:$springVersion"
 }
 
 def webapp = "$buildDir/webapps/alfresco"
@@ -28,11 +32,17 @@ task extractWar(type: Copy) {
     }
 }
 
-task startTomcat(type: JavaExec, dependsOn: extractWar) {
-    classpath = sourceSets.main.runtimeClasspath
-    main = 'xyz.its_me.TomcatLauncher'
-    systemProperties = ['tomcat.port'                                      : '8080',
+def tomcatProperties = ['tomcat.port'                                      : '8080',
                         'tomcat.context-path'                              : '/alfresco',
                         'tomcat.doc-base'                                  : webapp,
                         'tomcat.util.scan.StandardJarScanFilter.jarsToSkip': '*.jar']
+
+task startTomcat(type: JavaExec, dependsOn: extractWar) {
+    classpath = sourceSets.main.runtimeClasspath
+    main = 'xyz.its_me.TomcatLauncher'
+    systemProperties = tomcatProperties
+}
+
+test {
+    systemProperties = tomcatProperties
 }
