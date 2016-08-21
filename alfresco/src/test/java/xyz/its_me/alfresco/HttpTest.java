@@ -1,9 +1,12 @@
 package xyz.its_me.alfresco;
 
+import org.alfresco.service.cmr.repository.NodeRef;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import xyz.its_me.TomcatLauncher;
 
 import java.util.Map;
@@ -26,10 +29,16 @@ public class HttpTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private static SampleService sampleService;
+
     @BeforeClass
     public static void setupClass() {
         launcher.start();
         launcher.waitForStart();
+
+        final WebApplicationContext applicationContext =
+                WebApplicationContextUtils.getWebApplicationContext(launcher.getServletContext());
+        sampleService = applicationContext.getBean(SampleService.class);
     }
 
     @AfterClass
@@ -54,5 +63,8 @@ public class HttpTest {
         final String response = restTemplate.getForObject(url, String.class);
 
         assertThat(response, startsWith("workspace://SpacesStore/"));
+
+        final NodeRef rootNode = sampleService.getRoot();
+        assertThat(response, is(rootNode.toString()));
     }
 }

@@ -1,5 +1,7 @@
 package xyz.its_me;
 
+import javax.servlet.ServletContext;
+
 public interface TomcatLauncher {
     static TomcatLauncher create(int port, String contextPath, String docBase) {
         return new DefaultTomcatLauncher(port, contextPath, docBase);
@@ -25,4 +27,6 @@ public interface TomcatLauncher {
         launcher.start();
         launcher.waitForStop();
     }
+
+    ServletContext getServletContext();
 }

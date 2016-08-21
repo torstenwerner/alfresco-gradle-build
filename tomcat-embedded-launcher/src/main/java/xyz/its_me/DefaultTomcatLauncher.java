@@ -4,6 +4,7 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,6 +16,7 @@ public class DefaultTomcatLauncher implements TomcatLauncher {
     private final int port;
     private final String contextPath;
     private final String docBase;
+    private StandardContext standardContext;
 
     DefaultTomcatLauncher(int port, String contextPath, String docBase) {
         this.port = port;
@@ -36,10 +38,7 @@ public class DefaultTomcatLauncher implements TomcatLauncher {
 
             tomcat.setPort(port);
 
-            final StandardContext ctx = (StandardContext) tomcat.addWebapp(contextPath, docBase);
-
-            // does not work, sorry
-            ctx.setReloadable(true);
+            standardContext = (StandardContext) tomcat.addWebapp(contextPath, docBase);
 
             tomcat.getServer().addLifecycleListener((event) -> {
                 if ("after_start".equals(event.getType())) {
@@ -72,6 +71,11 @@ public class DefaultTomcatLauncher implements TomcatLauncher {
     @Override
     public void waitForStop() {
         wait(stopFuture);
+    }
+
+    @Override
+    public ServletContext getServletContext() {
+        return standardContext.getServletContext();
     }
 
     private void wait(CompletableFuture<Void> future) {
