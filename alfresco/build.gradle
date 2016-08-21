@@ -8,7 +8,10 @@ dependencies {
     runtime("org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts") {
         transitive = false
     }
-    runtime 'com.h2database:h2:1.4.192'
+    runtime 'com.h2database:h2:1.4.192',
+            rootProject,
+            files("$buildDir/WEB-INF/classes"),
+            fileTree(dir: "$buildDir/WEB-INF/lib", include: '*.jar')
 
     war "org.alfresco:alfresco:$alfrescoVersion:@war"
 }
@@ -20,10 +23,14 @@ task extractWar(type: Copy) {
         configurations.war.collect { zipTree(it) }
     }
     into webapp
+    eachFile { details ->
+        details.path = details.path.replaceFirst('WEB-INF/classes', '../../WEB-INF/classes')
+        details.path = details.path.replaceFirst('WEB-INF/lib', '../../WEB-INF/lib')
+    }
 }
 
-task startTomcat(type: JavaExec, dependsOn: [extractWar, rootProject.jar]) {
+task startTomcat(type: JavaExec, dependsOn: extractWar) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'xyz.its_me.alfresco.Launcher'
-    args = [webapp, rootProject.libsDir]
+    args = [webapp]
 }

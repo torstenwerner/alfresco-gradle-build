@@ -14,6 +14,7 @@ public class DefaultSampleService implements SampleService {
     @Autowired
     public DefaultSampleService(@Qualifier("nodeService") NodeService nodeService) {
         this.nodeService = nodeService;
+        System.out.printf("nodeService: %s\n", nodeService);
     }
 
     @Override
