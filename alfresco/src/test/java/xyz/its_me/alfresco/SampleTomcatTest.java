@@ -2,8 +2,11 @@ package xyz.its_me.alfresco;
 
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -15,11 +18,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 
-public class HttpTest {
+public class SampleTomcatTest {
     private static final String TOMCAT_PORT = "9274";
     private static final String BASE_URL = "http://localhost:" + TOMCAT_PORT + "/alfresco";
 
     private static final TomcatLauncher launcher;
+    private static AutowireCapableBeanFactory beanFactory;
 
     static {
         // The test port should be a little bit random to avoid conflicts with other programs.
@@ -29,7 +33,8 @@ public class HttpTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private static SampleService sampleService;
+    @Autowired
+    private SampleService sampleService;
 
     @BeforeClass
     public static void setupClass() {
@@ -38,13 +43,18 @@ public class HttpTest {
 
         final WebApplicationContext applicationContext =
                 WebApplicationContextUtils.getWebApplicationContext(launcher.getServletContext());
-        sampleService = applicationContext.getBean(SampleService.class);
+        beanFactory = applicationContext.getAutowireCapableBeanFactory();
     }
 
     @AfterClass
     public static void teardownClass() {
         launcher.stop();
         launcher.waitForStop();
+    }
+
+    @Before
+    public void setup() {
+        beanFactory.autowireBean(this);
     }
 
     @Test

@@ -22,11 +22,11 @@ public interface TomcatLauncher {
 
     void waitForStop();
 
+    ServletContext getServletContext();
+
     static void main(String[] args) throws Exception {
         final TomcatLauncher launcher = TomcatLauncher.create();
         launcher.start();
         launcher.waitForStop();
     }
-
-    ServletContext getServletContext();
 }
