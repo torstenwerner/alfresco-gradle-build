@@ -27,7 +27,8 @@ allprojects {
 }
 
 dependencies {
-    compile "org.alfresco:alfresco-data-model:$alfrescoVersion"
+    compile "org.alfresco:alfresco-data-model:$alfrescoVersion",
+            "org.alfresco.surf:spring-webscripts-api:$surfVersion"
 
     testCompile 'junit:junit:4.12',
             "org.springframework:spring-test:$springVersion",

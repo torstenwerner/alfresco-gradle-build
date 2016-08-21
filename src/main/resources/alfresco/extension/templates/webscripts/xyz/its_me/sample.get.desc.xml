@@ -1,0 +1,6 @@
+<webscript>
+    <shortname>Sample</shortname>
+    <description>Sample Web Script that responds back with the root nodeRef of workspace://SpacesStore</description>
+    <url>/sample</url>
+    <format default="json"/>
+</webscript>

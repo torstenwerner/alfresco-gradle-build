@@ -24,6 +24,8 @@ public class HttpTest {
         launcher = TomcatLauncher.create();
     }
 
+    private final RestTemplate restTemplate = new RestTemplate();
+
     @BeforeClass
     public static void setupClass() {
         launcher.start();
@@ -38,12 +40,19 @@ public class HttpTest {
 
     @Test
     public void serverIsUp() throws Exception {
-        final RestTemplate restTemplate = new RestTemplate();
         final String url = BASE_URL + "/s/api/server";
         final Map response = restTemplate.getForObject(url, Map.class);
 
         final Map data = (Map) response.get("data");
         assertThat(data.get("edition"), is("Community"));
         assertThat((String) data.get("version"), startsWith("5.2"));
+    }
+
+    @Test
+    public void sampleWebscript() throws Exception {
+        final String url = BASE_URL + "/s/sample";
+        final String response = restTemplate.getForObject(url, String.class);
+
+        assertThat(response, startsWith("workspace://SpacesStore/"));
     }
 }
