@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
@@ -21,30 +22,27 @@ public class TomcatLauncher {
     private static final CompletableFuture<Void> startFuture = new CompletableFuture<>();
     private static final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
 
-    public static void start(int port, String contextPath) {
+    public static void start(int port, String contextPath, String docBase) {
         try {
-            final String webappDirLocation = "src/main/webapp/";
-
             final Path basePath = Files.createTempDirectory("tomcat-base-dir");
+            System.out.printf("basePath: %s\n", basePath);
+            Files.createDirectory(basePath.resolve("webapps"));
             tomcat.setBaseDir(basePath.toString());
 
             tomcat.setPort(port);
 
-            final String webappPath = new File(webappDirLocation).getAbsolutePath();
-            final StandardContext ctx = (StandardContext) tomcat.addWebapp(contextPath, webappPath);
+            final StandardContext ctx = (StandardContext) tomcat.addWebapp(contextPath, docBase);
 
             // does not work, sorry
             ctx.setReloadable(true);
 
-            System.out.println("configuring app with basedir: " + webappPath);
-
             // Declare an alternative location for your "WEB-INF/classes" dir
             // Servlet 3.0 annotation will work
-//            final File additionWebInfClasses = new File("build/classes");
-//            final WebResourceRoot resources = new StandardRoot(ctx);
-//            resources.addPreResources(
-//                    new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
-//            ctx.setResources(resources);
+            final File additionWebInfClasses = new File("build/classes");
+            final WebResourceRoot resources = new StandardRoot(ctx);
+            resources.addPreResources(
+                    new DirResourceSet(resources, "/WEB-INF/classes", additionWebInfClasses.getAbsolutePath(), "/"));
+            ctx.setResources(resources);
 
 
             tomcat.getServer().addLifecycleListener((event) -> {
@@ -87,8 +85,7 @@ public class TomcatLauncher {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        start(8080, "/alfresco");
+    public static void waitforever() {
         tomcat.getServer().await();
     }
 }

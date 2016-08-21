@@ -17,10 +17,12 @@ Please change the testRuntime dependencies in build.gradle in case you need anot
 
 ## Starting Alfresco in an embedded Tomcat container
 
-That will be added later based on the project link:https://github.com/torstenwerner/tomcat-embedded[tomcat-embedded].
+Please run the gradle task startTomcat and open the URL link:http://localhost:8080/alfresco/[localhost:8080/alfresco].
 
-It is currently very limited. Please run the gradle task startTomcat and open the URL
-link:http://localhost:8080/alfresco/[localhost:8080/alfresco].
+[source]
+----
+./gradlew startTomcat
+----
 
 ## Continuous Integration thanks to Snap CI
 

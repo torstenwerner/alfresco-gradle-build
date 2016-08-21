@@ -11,16 +11,16 @@ allprojects {
             url 'https://artifacts.alfresco.com/nexus/content/groups/public/'
         }
     }
-}
 
-configurations {
-    all {
-        resolutionStrategy {
-            eachDependency {
-                DependencyResolveDetails details ->
-                    if (details.requested.group == 'org.springframework') {
-                        details.useVersion springVersion
-                    }
+    configurations {
+        all {
+            resolutionStrategy {
+                eachDependency {
+                    DependencyResolveDetails details ->
+                        if (details.requested.group == 'org.springframework') {
+                            details.useVersion springVersion
+                        }
+                }
             }
         }
     }
