@@ -26,9 +26,10 @@ configurations {
 }
 
 dependencies {
+    compile "org.alfresco:alfresco-data-model:$alfrescoVersion"
+
     testCompile 'junit:junit:4.12',
-            "org.springframework:spring-test:$springVersion",
-            "org.alfresco:alfresco-data-model:$alfrescoVersion"
+            "org.springframework:spring-test:$springVersion"
 
     testRuntime "org.alfresco:alfresco-repository:$alfrescoVersion",
             "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
