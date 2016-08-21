@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-public class SampleServiceTest extends AbstractSpringTest {
+public class SampleServiceSpringTest extends AbstractSpringTest {
     @Autowired
     private SampleService sampleService;
 
