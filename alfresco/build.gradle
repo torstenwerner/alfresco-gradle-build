@@ -47,4 +47,7 @@ task startTomcat(type: JavaExec, dependsOn: extractWar) {
 test {
     dependsOn extractWar
     systemProperties = tomcatProperties
+    testLogging.lifecycle {
+        events 'skipped', 'passed', 'failed'
+    }
 }
