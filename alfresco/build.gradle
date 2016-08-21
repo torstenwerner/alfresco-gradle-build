@@ -32,5 +32,8 @@ task extractWar(type: Copy) {
 task startTomcat(type: JavaExec, dependsOn: extractWar) {
     classpath = sourceSets.main.runtimeClasspath
     main = 'xyz.its_me.alfresco.Launcher'
-    args = [webapp]
+    systemProperties = ['tomcat.port'                                      : '8080',
+                        'tomcat.context-path'                              : '/alfresco',
+                        'tomcat.doc-base'                                  : webapp,
+                        'tomcat.util.scan.StandardJarScanFilter.jarsToSkip': '*.jar']
 }
