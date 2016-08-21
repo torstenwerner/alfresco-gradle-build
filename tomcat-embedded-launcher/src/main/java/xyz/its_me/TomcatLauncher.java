@@ -19,4 +19,10 @@ public interface TomcatLauncher {
     void stop();
 
     void waitForStop();
+
+    static void main(String[] args) throws Exception {
+        final TomcatLauncher launcher = TomcatLauncher.create();
+        launcher.start();
+        launcher.waitForStop();
+    }
 }

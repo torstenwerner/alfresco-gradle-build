@@ -3,15 +3,14 @@ configurations {
 }
 
 dependencies {
-    compile project(':tomcat-embedded-launcher')
-
+    runtime project(':tomcat-embedded-launcher'),
+            rootProject,
+            'com.h2database:h2:1.4.192',
+            files("$buildDir/WEB-INF/classes"),
+            fileTree(dir: "$buildDir/WEB-INF/lib", include: '*.jar')
     runtime("org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts") {
         transitive = false
     }
-    runtime 'com.h2database:h2:1.4.192',
-            rootProject,
-            files("$buildDir/WEB-INF/classes"),
-            fileTree(dir: "$buildDir/WEB-INF/lib", include: '*.jar')
 
     war "org.alfresco:alfresco:$alfrescoVersion:@war"
 }
@@ -31,7 +30,7 @@ task extractWar(type: Copy) {
 
 task startTomcat(type: JavaExec, dependsOn: extractWar) {
     classpath = sourceSets.main.runtimeClasspath
-    main = 'xyz.its_me.alfresco.Launcher'
+    main = 'xyz.its_me.TomcatLauncher'
     systemProperties = ['tomcat.port'                                      : '8080',
                         'tomcat.context-path'                              : '/alfresco',
                         'tomcat.doc-base'                                  : webapp,
