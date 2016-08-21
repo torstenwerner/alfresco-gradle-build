@@ -4,6 +4,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.web.client.RestOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -12,7 +13,7 @@ import xyz.its_me.TomcatLauncher;
 public abstract class AbstractTomcatTest {
     // The test port should be a little bit random to avoid conflicts with other programs.
     private static final String TOMCAT_PORT = "9274";
-    protected static final String BASE_URL = "http://localhost:" + TOMCAT_PORT + "/alfresco";
+    private static final String BASE_URL = "http://localhost:" + TOMCAT_PORT + "/alfresco";
 
     private static final TomcatLauncher launcher;
     private static AutowireCapableBeanFactory beanFactory;
@@ -22,7 +23,7 @@ public abstract class AbstractTomcatTest {
         launcher = TomcatLauncher.create();
     }
 
-    protected final RestTemplate restTemplate = new RestTemplate();
+    private final RestOperations restTemplate = new RestTemplate();
 
     @BeforeClass
     public static void setupClass() {
@@ -43,5 +44,13 @@ public abstract class AbstractTomcatTest {
     @Before
     public void setup() {
         beanFactory.autowireBean(this);
+    }
+
+    public String getUrl(String path) {
+        return BASE_URL + path;
+    }
+
+    public RestOperations getRestTemplate() {
+        return restTemplate;
     }
 }

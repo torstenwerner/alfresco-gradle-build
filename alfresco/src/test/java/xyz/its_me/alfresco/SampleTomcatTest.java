@@ -1,16 +1,8 @@
 package xyz.its_me.alfresco;
 
 import org.alfresco.service.cmr.repository.NodeRef;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import xyz.its_me.TomcatLauncher;
 
 import java.util.Map;
 
@@ -24,8 +16,8 @@ public class SampleTomcatTest extends AbstractTomcatTest {
 
     @Test
     public void serverIsUp() throws Exception {
-        final String url = BASE_URL + "/s/api/server";
-        final Map response = restTemplate.getForObject(url, Map.class);
+        final String url = getUrl("/s/api/server");
+        final Map response = getRestTemplate().getForObject(url, Map.class);
 
         final Map data = (Map) response.get("data");
         assertThat(data.get("edition"), is("Community"));
@@ -34,8 +26,8 @@ public class SampleTomcatTest extends AbstractTomcatTest {
 
     @Test
     public void sampleWebscript() throws Exception {
-        final String url = BASE_URL + "/s/sample";
-        final String response = restTemplate.getForObject(url, String.class);
+        final String url = getUrl("/s/sample");
+        final String response = getRestTemplate().getForObject(url, String.class);
 
         assertThat(response, startsWith("workspace://SpacesStore/"));
 
