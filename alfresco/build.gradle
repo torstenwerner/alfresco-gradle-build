@@ -3,6 +3,7 @@ configurations {
 }
 
 dependencies {
+    // This are both runtime and testCompile dependencies.
     compile project(':tomcat-embedded-launcher'),
             project(':alfresco-extension')
 

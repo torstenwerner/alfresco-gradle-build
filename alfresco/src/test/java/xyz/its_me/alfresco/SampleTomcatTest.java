@@ -17,7 +17,7 @@ public class SampleTomcatTest extends AbstractTomcatTest {
     @Test
     public void serverIsUp() throws Exception {
         final String url = getUrl("/s/api/server");
-        final Map response = getRestTemplate().getForObject(url, Map.class);
+        final Map response = getRestOperations().getForObject(url, Map.class);
 
         final Map data = (Map) response.get("data");
         assertThat(data.get("edition"), is("Community"));
@@ -27,7 +27,7 @@ public class SampleTomcatTest extends AbstractTomcatTest {
     @Test
     public void sampleWebscript() throws Exception {
         final String url = getUrl("/s/sample");
-        final String response = getRestTemplate().getForObject(url, String.class);
+        final String response = getRestOperations().getForObject(url, String.class);
 
         assertThat(response, startsWith("workspace://SpacesStore/"));
 

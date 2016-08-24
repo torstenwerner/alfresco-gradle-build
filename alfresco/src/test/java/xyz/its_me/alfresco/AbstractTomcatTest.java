@@ -27,7 +27,7 @@ public abstract class AbstractTomcatTest {
 
     @BeforeClass
     public static void setupClass() {
-        launcher.start();
+        launcher.triggerStart();
         launcher.waitForStart();
 
         final WebApplicationContext applicationContext =
@@ -37,7 +37,7 @@ public abstract class AbstractTomcatTest {
 
     @AfterClass
     public static void teardownClass() {
-        launcher.stop();
+        launcher.triggerStop();
         launcher.waitForStop();
     }
 
@@ -50,7 +50,7 @@ public abstract class AbstractTomcatTest {
         return BASE_URL + path;
     }
 
-    public RestOperations getRestTemplate() {
+    public RestOperations getRestOperations() {
         return restTemplate;
     }
 }

@@ -14,11 +14,11 @@ public interface TomcatLauncher {
         return create(port, contextPath, docBase);
     }
 
-    void start();
+    void triggerStart();
 
     void waitForStart();
 
-    void stop();
+    void triggerStop();
 
     void waitForStop();
 
@@ -26,7 +26,7 @@ public interface TomcatLauncher {
 
     static void main(String[] args) throws Exception {
         final TomcatLauncher launcher = TomcatLauncher.create();
-        launcher.start();
+        launcher.triggerStart();
         launcher.waitForStop();
     }
 }

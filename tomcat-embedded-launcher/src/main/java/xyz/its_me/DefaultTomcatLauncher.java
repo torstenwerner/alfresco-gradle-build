@@ -29,7 +29,7 @@ public class DefaultTomcatLauncher implements TomcatLauncher {
     private final CompletableFuture<Void> stopFuture = new CompletableFuture<>();
 
     @Override
-    public void start() {
+    public void triggerStart() {
         try {
             final Path basePath = Files.createTempDirectory("tomcat-base-dir");
             System.out.printf("basePath: %s\n", basePath);
@@ -60,7 +60,7 @@ public class DefaultTomcatLauncher implements TomcatLauncher {
     }
 
     @Override
-    public void stop() {
+    public void triggerStop() {
         try {
             tomcat.stop();
         } catch (LifecycleException e) {
