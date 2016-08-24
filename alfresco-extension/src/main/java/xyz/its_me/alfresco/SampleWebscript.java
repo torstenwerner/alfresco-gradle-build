@@ -10,8 +10,12 @@ import java.io.IOException;
 
 @Controller("webscript.xyz.its_me.sample.get")
 public class SampleWebscript extends org.springframework.extensions.webscripts.AbstractWebScript {
+    private final SampleService sampleService;
+
     @Autowired
-    private SampleService sampleService;
+    public SampleWebscript(SampleService sampleService) {
+        this.sampleService = sampleService;
+    }
 
     @Override
     public void execute(WebScriptRequest req, WebScriptResponse res) throws IOException {
