@@ -2,12 +2,13 @@ dependencies {
     compile "org.alfresco:alfresco-data-model:$alfrescoVersion",
             "org.alfresco.surf:spring-webscripts-api:$surfVersion"
 
+    runtime "org.alfresco:alfresco-repository:$alfrescoVersion"
+
     testCompile 'junit:junit:4.12',
             "org.springframework:spring-test:$springVersion",
             'org.mockito:mockito-core:2.0.107-beta'
 
-    testRuntime "org.alfresco:alfresco-repository:$alfrescoVersion",
-            "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
+    testRuntime "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
             'com.h2database:h2:1.4.192'
 }
 
