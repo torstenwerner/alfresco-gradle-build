@@ -10,3 +10,10 @@ dependencies {
             "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
             'com.h2database:h2:1.4.192'
 }
+
+task mockTest(type: Test) {
+    testLogging.lifecycle {
+        events 'skipped', 'passed', 'failed'
+    }
+    include '**/*MockTest.class'
+}
