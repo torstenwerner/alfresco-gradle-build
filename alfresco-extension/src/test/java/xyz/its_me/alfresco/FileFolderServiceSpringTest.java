@@ -1,6 +1,5 @@
 package xyz.its_me.alfresco;
 
-import org.alfresco.model.ContentModel;
 import org.alfresco.repo.model.Repository;
 import org.alfresco.repo.transaction.RetryingTransactionHelper;
 import org.alfresco.service.cmr.model.FileFolderService;
@@ -8,12 +7,14 @@ import org.alfresco.service.cmr.model.FileInfo;
 import org.alfresco.service.cmr.repository.NodeRef;
 import org.alfresco.service.cmr.repository.NodeService;
 import org.alfresco.service.transaction.TransactionService;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import static java.lang.String.format;
+import static org.alfresco.model.ContentModel.*;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
@@ -33,28 +34,42 @@ public class FileFolderServiceSpringTest extends AbstractSpringTest {
     @Autowired
     private Repository repository;
 
-    private NodeRef testFolder;
+    private static NodeRef testFolder;
 
     @Before
     public void before() {
+        if (testFolder != null) {
+            return;
+        }
         final NodeRef companyHome = repository.getCompanyHome();
         assertThat(companyHome, notNullValue());
-        final FileInfo fileInfo = runTransactional(
-                () -> fileFolderService.create(companyHome, "testFolder", ContentModel.TYPE_FOLDER));
-        this.testFolder = fileInfo.getNodeRef();
-    }
-
-    @After
-    public void after() {
+        testFolder = fileFolderService.searchSimple(companyHome, "testFolder");
         if (testFolder != null) {
-            runTransactional(() -> fileFolderService.delete(testFolder));
+            return;
+        }
+        final FileInfo fileInfo = runTransactional(() -> fileFolderService.create(companyHome, "testFolder", TYPE_FOLDER));
+        testFolder = fileInfo.getNodeRef();
+        for (int i = 0; i < 10000; i++) {
+            final NodeRef nodeRef = createFile(i);
+            assertThat(nodeRef, notNullValue());
         }
     }
 
     @Test
-    public void testCreateFolder() throws Exception {
+    public void testFolderCreated() throws Exception {
         assertThat(testFolder, notNullValue());
+        assertThat(nodeService.getProperty(testFolder, PROP_NAME), is("testFolder"));
+    }
 
+    @Test
+    public void testFilesCreated() throws Exception {
+        assertThat(fileFolderService.searchSimple(testFolder, "test09999.txt"), notNullValue());
+    }
+
+    private NodeRef createFile(int index) {
+        final String name = format("test%05d.txt", index);
+        final FileInfo fileInfo = runTransactional(() -> fileFolderService.create(testFolder, name, TYPE_CONTENT));
+        return fileInfo.getNodeRef();
     }
 
     /**
