@@ -12,10 +12,11 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.List;
+
 import static java.lang.String.format;
 import static org.alfresco.model.ContentModel.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class FileFolderServiceSpringTest extends AbstractSpringTest {
@@ -63,7 +64,14 @@ public class FileFolderServiceSpringTest extends AbstractSpringTest {
 
     @Test
     public void testFilesCreated() throws Exception {
-        assertThat(fileFolderService.searchSimple(testFolder, "test09999.txt"), notNullValue());
+        final NodeRef lastTestFile = fileFolderService.searchSimple(testFolder, "test09999.txt");
+        assertThat(lastTestFile, notNullValue());
+
+        // uses solr search
+        final List<FileInfo> hundredFiles = fileFolderService.search(testFolder, "test099*.txt", false);
+        assertThat(hundredFiles.size(), is(100));
+        final String firstName = nodeService.getProperty(hundredFiles.get(0).getNodeRef(), PROP_NAME).toString();
+        assertThat(firstName, startsWith("test099"));
     }
 
     private NodeRef createFile(int index) {
