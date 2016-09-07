@@ -6,7 +6,8 @@ dependencies {
 
     testCompile 'junit:junit:4.12',
             "org.springframework:spring-test:$springVersion",
-            'org.mockito:mockito-core:2.0.107-beta'
+            'org.mockito:mockito-core:2.0.107-beta',
+            "org.alfresco:alfresco-repository:$alfrescoVersion"
 
     testRuntime "org.alfresco:alfresco-repository:$alfrescoVersion:h2scripts",
             'com.h2database:h2:1.4.192'
