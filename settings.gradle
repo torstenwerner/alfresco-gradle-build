@@ -1,2 +1,2 @@
 rootProject.name = 'alfresco-gradle-build'
-include 'alfresco-extension', 'tomcat-embedded-launcher', 'alfresco'
+include 'alfresco-extension', 'tomcat-embedded-launcher', 'alfresco', 'docker'
