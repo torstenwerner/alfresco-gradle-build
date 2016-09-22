@@ -30,6 +30,23 @@ allprojects {
     }
 }
 
+configurations {
+    docker {
+        transitive = false
+    }
+}
+
+dependencies {
+    docker project(':alfresco-extension')
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.docker
+    into "$buildDir/docker/"
+}
+
+build.dependsOn copyDependencies
+
 wrapper {
     gradleVersion '3.0'
 }
